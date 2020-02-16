@@ -13,4 +13,4 @@ socket.on("entities", entity => {
 	console.log(entity);
 });
 
-app.listen(8080, "0.0.0.0");
+app.listen(7001, "0.0.0.0");
