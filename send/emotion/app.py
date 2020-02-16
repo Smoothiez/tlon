@@ -17,7 +17,6 @@ print('---------------------- Initializing Socket ----------------------')
 sio = socketio.Client()
 sio.connect('http://178.62.39.153:8080/send?token=1')
 print('socket.io session ID:', sio.sid)
-sio.emit("type", "send-1")
 
 def gen():
     cap = cv2.VideoCapture(0)
