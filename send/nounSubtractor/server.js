@@ -14,7 +14,6 @@ app.get("/speech", (req, res) => {
 });
 
 socket.on("connect", function(data) {
-	socket.emit("type", "send-1");
 	app.get("/text/:text", (req, res) => {
 		async function quickstart() {
 			const language = require("@google-cloud/language");
