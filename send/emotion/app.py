@@ -45,8 +45,8 @@ def gen():
 
         _, jpeg = cv2.imencode('.jpg', frame)
         encoded_jpeg = base64.b64encode(jpeg)
-        print(base64.b64encode(jpeg))
-        sio.emit('frame', encoded_jpeg)
+        print(encoded_jpeg)
+        sio.emit("h", "LOL")
         #frame = jpeg.tobytes()
         #yield (b'--frame\r\n'
             #b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
