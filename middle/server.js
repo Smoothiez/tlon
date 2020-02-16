@@ -9,8 +9,7 @@ const io = require("socket.io")(server);
 
 io.on('connection', client => {
 	console.log(client.id + ' connected.');
-	io.emit('hello', 'hello3');
-	client.on('text', data => {
+	client.on('entities', data => {
 		console.log(data);
 	});
 });
