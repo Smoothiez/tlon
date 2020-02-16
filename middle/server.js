@@ -6,9 +6,12 @@ const port = 8080;
 const path = require("path");
 var server = http.createServer(app);
 const io = require("socket.io")(server);
+let clients = new Set()
 
 io.on('connection', client => {
+	clients.add(client.id);
 	console.log(client.id + ' connected.');
+	console.log('Currently connected clients: ' + clients)
 	client.on('entities', data => {
 		console.log(data);
 	});
