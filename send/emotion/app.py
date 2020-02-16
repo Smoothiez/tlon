@@ -12,10 +12,14 @@ classifier =load_model('./emotion_model.h5')
 classifier._make_predict_function()
 class_labels = ['Upset','Happy','Neutral','Sad','Surprise']
 
-print('---------------------- Initializing Socket ----------------------')
-sio = socketio.Client()
-sio.connect('http://178.62.39.153:8080?token=1', namespaces=['/send'])
-print('socket.io session ID:', sio.sid)
+try:
+    print('---------------------- Initializing Socket ----------------------')
+    sio = socketio.Client()
+    sio.connect('http://178.62.39.153:8080?token=1', namespaces=['/send'])
+    print('socket.io session ID:', sio.sid)
+except:
+    print('couldn\'t connect to socket')
+    sio = None
 
 def gen():
     cap = cv2.VideoCapture(0)
@@ -46,7 +50,8 @@ def gen():
         _, jpeg = cv2.imencode('.jpg', frame)
         encoded_jpeg = base64.b64encode(jpeg)
         print(encoded_jpeg)
-        sio.emit("frame", encoded_jpeg, namespace='/send')
+        if sio is not None:
+            sio.emit("frame", encoded_jpeg, namespace='/send')
         #frame = jpeg.tobytes()
         #yield (b'--frame\r\n'
             #b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
