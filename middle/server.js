@@ -12,14 +12,17 @@ io.on("connection", client => {
 	clients.push(client.id);
 	console.log("CLIENTS CONNECTED: " + clients);
 	client.on("entities", data => {
-		console.log("LOL");
-		if (clients.len == 2) {
-			console.log("TWO CLIENTS CONNECTED");
+		if (clients.length == 2) {
+			let other = clients[0] == client.id ? clients[0] : clients[1];
+			console.log("ID " + client.id + " SENDING TO " + other);
+			io.to(other).emit("entities", data);
 		}
 	});
 	client.on("frame", data => {
-		if (clients.len == 2) {
-			console.log("TWO CLIENTS CONNECTED");
+		if (clients.length == 2) {
+			let other = clients[0] == client.id ? clients[0] : clients[1];
+			console.log("ID " + client.id + " SENDING TO " + other);
+			io.to(other).emit("frame", data);
 		}
 	});
 });
