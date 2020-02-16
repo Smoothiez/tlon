@@ -12,6 +12,7 @@ io.on("connection", client => {
 	clients.push(client.id);
 	console.log("CLIENTS CONNECTED: " + clients);
 	client.on("entities", data => {
+		console.log("LOL");
 		if (clients.len == 2) {
 			console.log("TWO CLIENTS CONNECTED");
 		}
