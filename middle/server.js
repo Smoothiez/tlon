@@ -26,7 +26,7 @@ send.on("connection", client => {
 		}
 	});
 
-	client.on("hello", frame => {
+	client.on("frame", frame => {
 		console.log("lol");
 		for (var id in receivers) {
 			if (receivers[id] != client.handshake.query.token) {

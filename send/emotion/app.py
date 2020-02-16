@@ -16,7 +16,6 @@ print('---------------------- Initializing Socket ----------------------')
 sio = socketio.Client()
 sio.connect('http://178.62.39.153:8080?token=1', namespaces=['/send'])
 print('socket.io session ID:', sio.sid)
-sio.emit('hello', 'hello')
 
 def gen():
     cap = cv2.VideoCapture(0)
@@ -47,7 +46,7 @@ def gen():
         _, jpeg = cv2.imencode('.jpg', frame)
         encoded_jpeg = base64.b64encode(jpeg)
         print(encoded_jpeg)
-        sio.emit("h", "LOL")
+        sio.emit("frame", encoded_jpeg, namespace='/send')
         #frame = jpeg.tobytes()
         #yield (b'--frame\r\n'
             #b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
