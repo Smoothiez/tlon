@@ -11,19 +11,23 @@
 		></script>
 		<script>
 			window.onload = function() {
-				console.log("here");
-				const socket = io.connect("http://localhost:8080");
-				console.log("here");
-				console.log(socket);
-				socket.on("image", data => {
-					console.log("HELLLOOO");
-					console.log("data", data);
-				});
+				var i = document.getElementById("img-stream");
+				var count = 0;
+				setInterval(() => {
+					i.src = "http://localhost:5000?count=" + count;
+					count += 1;
+				}, 1000);
 			};
 		</script>
 
 		<body style="background-color:black;">
-			<h1 style="color:white;">WOOORKING</h1>
+			<h1 style="color:white;">WORKING</h1>
+			<img
+				src="#"
+				id="img-stream"
+				width="500px"
+				height="500px"
+			/>
 			<div class="wrapper">
 				<p class="subtitles" id="text_neutral"></p>
 			</div>

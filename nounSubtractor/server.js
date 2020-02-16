@@ -1,14 +1,15 @@
 "use strict";
-const cv = require("opencv4nodejs");
 const express = require("express");
 const app = express();
-const http = require("http");
-const port = 8080;
 const path = require("path");
-var server = http.createServer(app);
-const io = require("socket.io")(server);
 
 app.get("/", function(req, res) {
+	console.log("DSHIFDHIFHSDHFGSD");
+	console.log("DSHIFDHIFHSDHFGSD");
+	console.log("DSHIFDHIFHSDHFGSD");
+	console.log("DSHIFDHIFHSDHFGSD");
+	console.log("DSHIFDHIFHSDHFGSD");
+	console.log("DSHIFDHIFHSDHFGSD");
 	res.sendFile(path.join(__dirname + "/index.html"));
 });
 
@@ -19,10 +20,6 @@ app.get("/speech", (req, res) => {
 app.get("/json", (req, res) => {
 	res.sendFile(path.join(__dirname + "/webcams.json"));
 });
-
-setInterval(() => {
-	io.emit("image", "");
-}, 10);
 
 app.get("/text/:text", (req, res) => {
 	async function quickstart() {
@@ -56,4 +53,4 @@ app.get("/text/:text", (req, res) => {
 	quickstart().catch(console.error);
 });
 
-server.listen(port, () => console.log(`Nat Lang listening on port ${port}!`));
+app.listen(5051, "0.0.0.0");
