@@ -12,6 +12,9 @@ io.on('connection', client => {
 	client.on('entities', data => {
 		console.log(data);
 	});
+	client.on('frame', data => {
+		console.log(data)
+	});
 });
 
 server.listen(8080, () => console.log(`Nat Lang listening on port ${port}!`));
