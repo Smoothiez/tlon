@@ -35,7 +35,7 @@ socket.on("connect", function(data) {
 				console.log(entity.name);
 				console.log(` - Type: ${entity.type}, Salience: ${entity.salience}`);
 			});
-			console.log('SENDING ENTITIES TO SERVER...")
+			console.log("SENDING ENTITIES TO SERVER")
 			socket.emit("entities", entities);
 		}
 		quickstart().catch(console.error);
