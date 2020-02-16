@@ -11,7 +11,7 @@ let clients = new Set()
 io.on('connection', client => {
 	clients.add(client.id);
 	console.log(client.id + ' connected.');
-	console.log('Currently connected clients: ' + clients)
+	console.log('Currently connected clients: ' + clients.values())
 	client.on('entities', data => {
 		console.log(data);
 	});
