@@ -12,8 +12,14 @@ io.on("connection", client => {
 	clients.push(client.id);
 	console.log("CLIENTS CONNECTED: " + clients);
 	client.on("entities", data => {
+		if (clients.len == 2) {
+			console.log("TWO CLIENTS CONNECTED");
+		}
 	});
 	client.on("frame", data => {
+		if (clients.len == 2) {
+			console.log("TWO CLIENTS CONNECTED");
+		}
 	});
 });
 
