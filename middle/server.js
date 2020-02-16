@@ -19,7 +19,7 @@ send.on("connection", client => {
 	client.on("entities", data => {
 		for (var id in receivers) {
 			if (receivers[id] != client.handshake.query.token) {
-				console.log("ID " + client.id + " SENDING TO " + other);
+				console.log("ID " + client.id + " SENDING TO " + id);
 				io.to(id).emit("entities", data);
 			}
 		}
@@ -28,7 +28,7 @@ send.on("connection", client => {
 	client.on("frame", data => {
 		for (var id in receivers) {
 			if (receivers[id] != client.handshake.query.token) {
-				console.log("ID " + client.id + " SENDING TO " + other);
+				console.log("ID " + client.id + " SENDING TO " + id);
 				io.to(id).emit("frame", data);
 			}
 		}
