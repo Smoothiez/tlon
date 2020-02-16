@@ -33,6 +33,10 @@ send.on("connection", client => {
 			}
 		}
 	});
+
+	client.on("error", err => {
+		console.log(err);
+	});
 });
 
 receive.on("connection", client => {
