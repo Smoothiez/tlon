@@ -8,7 +8,7 @@
 		></script>
 
 		<body style="background-color:black;">
-			<p id="lol" style="color:white;">lol bro</p>
+			<img id="frame" width="500px" height="500px" />
 			<div class="wrapper">
 				<p class="subtitles" id="text_neutral"></p>
 			</div>
@@ -17,13 +17,13 @@
 		<script>
 			$(function() {
 				console.log("Connecting to socket");
-				var socket = io("http://178.62.39.153:8080/receive?token=1");
+				var socket = io("http://178.62.39.153:8080/receive?token=2");
 				socket.on("frame", function(frame) {
-					console.log("lol");
-					console.log(frame);
+					document
+						.getElementById("frame")
+						.setAttribute("src", "data:image/jpg;base64," + frame);
 				});
 			});
 		</script>
 	</head>
 </html>
-document.getElementById("text_neutral").innerHTML = decodeURI(
