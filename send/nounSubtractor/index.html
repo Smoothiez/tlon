@@ -37,10 +37,9 @@
 
 			function showResult() {
 				if (myRec.resultValue == true) {
-					console.log("Heard Something...");
-
 					var text = encodeURI(myRec.resultString);
 					let splitString = split(text, "%20");
+					console.log(splitString);
 
 					//attempts to remove nouns from input
 					fetch("text/" + text)
