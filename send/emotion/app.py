@@ -13,7 +13,6 @@ classifier._make_predict_function()
 class_labels = ['Upset','Happy','Neutral','Sad','Surprise']
 
 print('---------------------- Initializing Socket ----------------------')
-
 sio = socketio.Client()
 sio.connect('http://178.62.39.153:8080/send?token=1')
 print('socket.io session ID:', sio.sid)
