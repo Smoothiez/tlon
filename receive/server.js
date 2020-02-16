@@ -9,10 +9,8 @@ app.get("/", function(req, res) {
 	res.sendFile(path.join(__dirname + "/index.html"));
 });
 
-socket.on("connect", function(data) {
-	socket.on("entities", entity => {
-		console.log(entity)
-	});
+socket.on("entities", entity => {
+	console.log(entity);
 });
 
 app.listen(8080, "0.0.0.0");

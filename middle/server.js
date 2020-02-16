@@ -16,20 +16,20 @@ send.on("connection", client => {
 	console.log(client.handshake.query.token, client.id);
 	senders[client.id] = [client.handshake.query.token];
 
-	client.on("entities", data => {
+	client.on("entities", entities => {
 		for (var id in receivers) {
 			if (receivers[id] != client.handshake.query.token) {
 				console.log("ID " + client.id + " SENDING TO " + id);
-				io.to(id).emit("entities", data);
+				io.of('/send').to(id).emit("entities", entities);
 			}
 		}
 	});
 
-	client.on("frame", data => {
+	client.on("frame", frame => {
 		for (var id in receivers) {
 			if (receivers[id] != client.handshake.query.token) {
 				console.log("ID " + client.id + " SENDING TO " + id);
-				io.to(id).emit("frame", data);
+				io.to(id).emit("frame", frame);
 			}
 		}
 	});
