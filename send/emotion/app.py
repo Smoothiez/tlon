@@ -14,7 +14,7 @@ class_labels = ['Upset','Happy','Neutral','Sad','Surprise']
 
 print('---------------------- Initializing Socket ----------------------')
 sio = socketio.Client()
-sio.connect('http://178.62.39.153:8080/send?token=1')
+sio.connect('http://178.62.39.153:8080?token=1', namespaces=['/send'])
 print('socket.io session ID:', sio.sid)
 
 def gen():
@@ -44,7 +44,9 @@ def gen():
                 cv2.putText(frame,'No Face Found',(20,60),cv2.FONT_HERSHEY_DUPLEX,1,(255,255,255),2)
 
         _, jpeg = cv2.imencode('.jpg', frame)
-        sio.emit('frame', base64.b64encode(jpeg))
+        encoded_jpeg = base64.b64encode(jpeg)
+        print(base64.b64encode(jpeg))
+        sio.emit('frame', encoded_jpeg)
         #frame = jpeg.tobytes()
         #yield (b'--frame\r\n'
             #b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
