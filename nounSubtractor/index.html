@@ -9,25 +9,9 @@
 			integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo="
 			crossorigin="anonymous"
 		></script>
-		<script>
-			window.onload = function() {
-				var i = document.getElementById("img-stream");
-				var count = 0;
-				setInterval(() => {
-					i.src = "http://localhost:5000?count=" + count;
-					count += 1;
-				}, 1000);
-			};
-		</script>
 
 		<body style="background-color:black;">
-			<h1 style="color:white;">WORKING</h1>
-			<img
-				src="#"
-				id="img-stream"
-				width="500px"
-				height="500px"
-			/>
+			<h1 style="color:white;">SAY SOMETHING...</h1>
 			<div class="wrapper">
 				<p class="subtitles" id="text_neutral"></p>
 			</div>
