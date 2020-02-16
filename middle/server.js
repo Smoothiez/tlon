@@ -6,25 +6,38 @@ const port = 8080;
 const path = require("path");
 var server = http.createServer(app);
 const io = require("socket.io")(server);
-let clients = [];
+let senders = {};
+let receivers = {};
 
-io.on("connection", client => {
-	clients.push(client.id);
-	console.log("CLIENTS CONNECTED: " + clients);
+let send = io.of("/send");
+let receive = io.of("/receive");
+
+send.on("connection", client => {
+	console.log("SENDER CONNECTED: " + client.id);
+	senders[client.id] = [client.handshake.query.token];
+
 	client.on("entities", data => {
-		if (clients.length == 2) {
-			let other = clients[0] == client.id ? clients[0] : clients[1];
-			console.log("ID " + client.id + " SENDING TO " + other);
-			io.to(other).emit("entities", data);
+		for (var id in receivers) {
+			if (receivers[id] != client.handshake.query.token) {
+				console.log("ID " + client.id + " SENDING TO " + other);
+				io.to(id).emit("entities", data);
+			}
 		}
 	});
+
 	client.on("frame", data => {
-		if (clients.length == 2) {
-			let other = clients[0] == client.id ? clients[0] : clients[1];
-			console.log("ID " + client.id + " SENDING TO " + other);
-			io.to(other).emit("frame", data);
+		for (var id in receivers) {
+			if (receivers[id] != client.handshake.query.token) {
+				console.log("ID " + client.id + " SENDING TO " + other);
+				io.to(id).emit("frame", data);
+			}
 		}
 	});
+});
+
+receive.on("connection", client => {
+	console.log("RECEIVER CONNECTED: " + client.id);
+	receivers[client.id] = [client.handshake.query.token];
 });
 
 server.listen(8080, () => console.log(`Nat Lang listening on port ${port}!`));
