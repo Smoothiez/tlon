@@ -13,6 +13,7 @@ let send = io.of("/send");
 let receive = io.of("/receive");
 
 send.on("connection", client => {
+	console.log('SENDER CONNECTED')
 	console.log(client.handshake.query.token, client.id);
 	senders[client.id] = [client.handshake.query.token];
 
@@ -25,7 +26,7 @@ send.on("connection", client => {
 		}
 	});
 
-	client.on("h", frame => {
+	client.on("hello", frame => {
 		console.log("lol");
 		for (var id in receivers) {
 			if (receivers[id] != client.handshake.query.token) {
@@ -41,6 +42,7 @@ send.on("connection", client => {
 });
 
 receive.on("connection", client => {
+	console.log('RECEIVER CONNECTED')
 	console.log(client.handshake.query.token, client.id);
 	receivers[client.id] = [client.handshake.query.token];
 });
