@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="speech"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+			integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo="
+			crossorigin="anonymous"
+		></script>
+
+		<body style="background-color:black;">
+			<p id="lol" style="color:white;"></p>
+			<div class="wrapper">
+				<p class="subtitles" id="text_neutral"></p>
+			</div>
+		</body>
+
+		<script>
+			function () {
+				fetch("frame")
+					.then(function(data) {
+						console.log(data);
+					});
+			}
+		</script>
+	</head>
+</html>
+document.getElementById("text_neutral").innerHTML = decodeURI(
