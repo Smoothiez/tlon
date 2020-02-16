@@ -29,7 +29,7 @@ send.on("connection", client => {
 		for (var id in receivers) {
 			if (receivers[id] != client.handshake.query.token) {
 				console.log("ID " + client.id + " SENDING TO " + id);
-				client.to(id).emit("frame", frame);
+				receive.emit("frame", frame);
 			}
 		}
 	});

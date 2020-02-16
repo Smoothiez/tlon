@@ -13,8 +13,12 @@ app.get("/", function(req, res) {
 	res.sendFile(path.join(__dirname + "/index.html"));
 });
 
-socket.on("entities", text => {
-	console.log(text);
+socket.on("entities", json => {
+	console.log(json);
+});
+
+socket.on("frame", frame => {
+	console.log(frame);
 });
 
 socket.on('error', err => {
