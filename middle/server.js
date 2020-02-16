@@ -20,7 +20,7 @@ send.on("connection", client => {
 		for (var id in receivers) {
 			if (receivers[id] != client.handshake.query.token) {
 				console.log("ID " + client.id + " SENDING TO " + id);
-				client.to(id).emit("entities", entities);
+				receive.emit("hello", "YES");
 			}
 		}
 	});
@@ -40,4 +40,4 @@ receive.on("connection", client => {
 	receivers[client.id] = [client.handshake.query.token];
 });
 
-server.listen(8080, () => console.log(`Nat Lang listening on port ${port}!`));
+server.listen(8080);
