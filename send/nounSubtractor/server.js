@@ -3,7 +3,11 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const io = require("socket.io-client");
-let socket = io("http://178.62.39.153:8080/send?token=1");
+var arg = process.argv.slice(2)[0];
+if (!['1', '2'].includes(arg)) {
+	process.exit();
+}
+let socket = io("http://178.62.39.153:8080/send?token=" + arg);
 
 const language = require("@google-cloud/language");
 const language_client = new language.LanguageServiceClient();

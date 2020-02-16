@@ -3,7 +3,11 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const io = require("socket.io-client");
-let socket = io("http://178.62.39.153:8080/receive?token=1");
+var arg = process.argv.slice(2)[0];
+if (!['1', '2'].includes(arg)) {
+	process.exit();
+}
+let socket = io("http://178.62.39.153:8080/receive?token=" + arg);
 
 app.get("/", function(req, res) {
 	res.sendFile(path.join(__dirname + "/index.html"));
