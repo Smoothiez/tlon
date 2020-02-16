@@ -1,121 +1,107 @@
 <html>
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="speech"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+			integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo="
+			crossorigin="anonymous"
+		></script>
+		<script>
+			window.onload = function() {
+				console.log("here");
+				const socket = io.connect("http://localhost:8080");
+				console.log("here");
+				console.log(socket);
+				socket.on("image", data => {
+					console.log("HELLLOOO");
+					console.log("data", data);
+				});
+			};
+		</script>
 
-<head>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="speech"></script>
+		<body style="background-color:black;">
+			<h1 style="color:white;">WOOORKING</h1>
+			<div class="wrapper">
+				<p class="subtitles" id="text_neutral"></p>
+			</div>
+		</body>
 
+		<script>
+			var currentlyPlaying = null;
+			var myRec = new p5.SpeechRec(); // new P5.SpeechRec object
+			myRec.continuous = true; // do continuous recognition
+			myRec.interimResults = false; // allow partial recognition (faster, less accurate)
+			myRec.onError = restart;
+			myRec.onEnd = restart;
 
+			function restart() {
+				console.log("Restarting!");
+				myRec.start();
+			}
 
-<body style="background-color:black;">
-	<img style="-webkit-user-select: none;margin: auto;" src="http://localhost:5000/"\>
-	<div class="wrapper">
-		<p class="subtitles" id="text_neutral"></p>
-		<!-- <video id="video_neutral" width="900" height="900" loop muted>
-			<source src="http://localhost:8080/video/neutral" type="video/mp4" />
-		</video> -->
-	</div> -->
-	<!-- <div class="alt_text">
-		<p class="subtitles" id="sentiment_info"></p>
-	</div> -->
-</body>
+			function setup() {
+				myRec.onResult = showResult;
+				myRec.start();
+			}
 
+			function showResult() {
+				if (myRec.resultValue == true) {
+					console.log("Heard Something...");
 
+					var text = encodeURI(myRec.resultString);
+					let splitString = split(text, "%20");
 
-<!-- <a name="windy-webcam-timelapse-player" data-id="1400844424" data-play="month" href="https://windy.com/webcams/1400844424" target="_blank">Lonan: Ramsey</a><script async type="text/javascript" src="https://webcams.windy.com/webcams/public/embed/script/player.js"></script> -->
+					//attempts to remove nouns from input
+					fetch("text/" + text)
+						.then(function(data) {
+							return data.json();
+						})
+						.then(function(entities) {
+							var nouns = [];
+							entities.forEach(entity => {
+								nouns.push(entity.name);
+							});
+							var filteredString = splitString
+								.filter(n => !nouns.includes(n))
+								.join(" ");
 
-
-
-
-<script>
-
-	var currentlyPlaying = null
-	var myRec = new p5.SpeechRec() // new P5.SpeechRec object
-	myRec.continuous = true // do continuous recognition
-	myRec.interimResults = false // allow partial recognition (faster, less accurate)
-	myRec.onError = restart;
-	myRec.onEnd = restart;
-
-	function restart() {
-		console.log('Restarting!')
-		myRec.start();
-	}
-
-	function setup() {
-		myRec.onResult = showResult
-		myRec.start()
-	}
-
-	function showResult() {
-
-		if (myRec.resultValue == true) {
-			console.log('Heard Something...')
-
-			var text = encodeURI(myRec.resultString)
-			let splitString = split(text, '%20')
-
-			//attempts to remove nouns from input
-			fetch('text/' + text)
-				.then(function (data) {
-					return data.json()
-				})
-				.then(function (entities) {
-					var nouns = []
-					entities.forEach((entity) => {
-						nouns.push(entity.name)
-					})
-					var filteredString = splitString.filter(n => !nouns.includes(n)).join(' ')
-
-					document.getElementById('text_neutral').innerHTML = decodeURI(filteredString)
-					// ('#video_neutral').show();
-					$('#text_neutral').show();
-				})
-
-			// console.log(removedText)
-			// document.getElementById('text_neutral').innerHTML = decodeURI(removedText)
-			// $('#text_neutral').show();
-
-			// document.getElementById('sentiment_info').innerHTML =
-			// 	'<p>Sentiment Score (Between -1 & 1): ' +
-			// 	sentiment.score +
-			// 	'</p><p>Sentiment Magnitude: ' +
-			// 	sentiment.magnitude +
-			// 	'</p>'
-
-		}
-	}
-
-
-</script>
-
-</head>
-<style>
-	.wrapper {
-		/* position: relative;
+							document.getElementById("text_neutral").innerHTML = decodeURI(
+								filteredString
+							);
+							// ('#video_neutral').show();
+							$("#text_neutral").show();
+						});
+				}
+			}
+		</script>
+	</head>
+	<style>
+		.wrapper {
+			/* position: relative;
 		display: inline-block; */
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		overflow: hidden;
-	}
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			overflow: hidden;
+		}
 
-
-	.wrapper .subtitles {
-		background-color: rgba(1, 1, 1, 0.5);
-		font-family: "Arial", Helvetica, sans-serif;
-		position: absolute;
-		display: block;
-		z-index: 150;
-		bottom: 23;
-		font-size: 30;
-		color: white;
-		left: 50%;
-		-webkit-transform: translateX(50%);
-		transform: translateX(-50%);
-	}
-</style>
-
+		.wrapper .subtitles {
+			background-color: rgba(1, 1, 1, 0.5);
+			font-family: "Arial", Helvetica, sans-serif;
+			position: absolute;
+			display: block;
+			z-index: 150;
+			bottom: 23;
+			font-size: 30;
+			color: white;
+			left: 50%;
+			-webkit-transform: translateX(50%);
+			transform: translateX(-50%);
+		}
+	</style>
 </html>
