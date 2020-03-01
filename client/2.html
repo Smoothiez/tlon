@@ -1,0 +1,97 @@
+<html>
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="scripts/p5.speech.js"></script>
+		<script src="scripts/compromise.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+			integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo="
+			crossorigin="anonymous"
+		></script>
+
+		<body style="background-color:black;">
+			<h1>SAY SOMETHING...</h1>
+			<h3>RECEIVED:</h3>
+			<p id="received">...</p>
+			<h3>SENT:</h3>
+			<p id="sent">...</p>
+		</body>
+
+		<script>
+			console.log("Connecting to socket...");
+			var socket = io("http://64.227.41.62:8080?token=2");
+
+			socket.on("connect", () => {
+				console.log("Connected to socket:", socket.connected);
+			});
+
+			socket.on("disconnect", reason => {
+				console.log("Socket disconnected:", reason);
+				console.log("Attempting to reconnect...");
+				if (reason === "io server disconnect") {
+					socket.connect();
+				}
+			});
+
+			socket.on("entities", function(text) {
+				console.log("Entities received:", text);
+				document.getElementById("received").innerHTML = text;
+			});
+
+			console.log("Creating speech object.");
+			var myRec = new p5.SpeechRec(); // new P5.SpeechRec object
+			console.log("Created speech object.");
+			//myRec.continuous = true; // do continuous recognition
+			myRec.interimResults = false; // allow partial recognition (faster, less accurate)
+			myRec.onError = restart;
+			myRec.onEnd = restart;
+
+			function restart() {
+				console.log("Restarting!");
+				myRec.start();
+			}
+
+			function setup() {
+				console.log("Starting object");
+				myRec.onResult = showResult;
+				myRec.start();
+			}
+
+			function showResult() {
+				if (myRec.resultValue == true) {
+					var text = encodeURI(myRec.resultString);
+					let s = split(text, "%20").join(" ");
+					console.log("Original:", s);
+
+					let doc = nlp(s);
+					let nouns = doc.nouns().out("array");
+					console.log("Nouns:", nouns);
+
+					nouns.forEach(noun => {
+						s = s.replace(noun, "");
+					});
+
+					s = s.replace(/\s+/g, " ").trim();
+					if (s == "") {
+						s = "...";
+					}
+					console.log("Nouns removed:", s);
+
+					console.log("Socket connection status:", socket.connected);
+					socket.emit("entities", s);
+
+					document.getElementById("sent").innerHTML = s;
+				}
+			}
+		</script>
+	</head>
+	<style>
+		h1,
+		h3,
+		p {
+			color: white;
+		}
+	</style>
+</html>

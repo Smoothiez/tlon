@@ -1,46 +1,39 @@
 # Tlon
 
+## Usage
+On one computer, run `node server_1.js` and visit [localhost:7000](http://localhost:7000).
+
+On another computer, run `node server_2.js` and visit [localhost:7001](http://localhost:7001).
+
+## Restarting server
+If you end up having to troubleshoot the server, ssh into it and:
+```bash
+screen -r # reattach to screen session
+# check server status, maybe restart it, maybe you made a change and have to run git pull or npm install or something
+# press CTRL+A then CTRL+D to exit the `screen` session
+exit # to leave ssh
+```
+
 ## Installation
 
-### Client
+### Noun Subtractor Client
+No installation necessary.
 
-#### Python
-~~~
-pip install --user keras==2.2.4 tensorflow==1.13.1 flask opencv-python python-socketio[client]
-~~~
-
-#### Node
-~~~
-npm install express opencv4nodejs socket.io-client
-~~~
-
-#### Cmake
-opencv requires cmake.
-
-For mac:
-~~~
-brew install cmake
-~~~
-
-### Server
-~~~
-npm install express socket.io
-~~~
-
-## Usage
-
-### Client
-Flask
-~~~
-python -m flask run -h 0.0.0.0 -p 5000
-~~~
-
-Node
-~~~
+### Noun Subtractor Server
+ssh into the server and:
+```bash
+git clone https://github.com/Smoothiez/tlon.git
+cd tlon
+npm install
+cd server
+screen -r # check if a screen session is already running, if not just run `screen`
 node server.js
-~~~
+# press CTRL+A then CTRL+D to exit the `screen` session
+exit # to leave ssh
+```
 
-### Server
+### Emotion Detector
 ~~~
-node server.js
+pip install --user keras==2.2.4 tensorflow==1.13.1 flask opencv-python
 ~~~
+Note: opencv requires cmake
