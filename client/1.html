@@ -25,7 +25,7 @@
 
 		<script>
 			console.log("Connecting to socket...");
-			var socket = io("http:///178.128.173.136:8080?token=1");
+			var socket = io("http://178.128.173.136:8080?token=1");
 
 			socket.on("connect", () => {
 				console.log("Connected to socket:", socket.connected);
